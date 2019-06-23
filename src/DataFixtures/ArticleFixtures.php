@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures;
 
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\Article;
 use App\Entity\Tag;
@@ -26,7 +25,8 @@ class ArticleFixtures extends BaseFixture implements DependentFixtureInterface
     ];
     public function loadData(ObjectManager $manager)
     {
-    	$this->createMany(Article::class, 10, function(Article $article, $count) use ($manager) {
+    	$this->createMany( 10,'main_articles', function($i) use ($manager) {
+            $article = new Article();
             $article->setTitle($this->faker->randomElement(self::$articleTitles))
             ->setContent(<<<EOF
 Spicy **jalapeno bacon** ipsum dolor amet veniam shank in dolore. Ham hock nisi landjaeger cow,
@@ -53,10 +53,11 @@ EOF
             ->setHeartCount($this->faker->numberBetween(5, 100))
             ->setImageFilename($this->faker->randomElement(self::$articleImages))
         ;
-        $tags = $this->getRandomReferences(Tag::class, $this->faker->numberBetween(0, 5));
+        $tags = $this->getRandomReferences('main_tags', $this->faker->numberBetween(0, 5));
             foreach ($tags as $tag) {
                 $article->addTag($tag);
             }
+        return $article;
         }); 
   
         $manager->flush();
