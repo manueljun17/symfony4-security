@@ -1,5 +1,4 @@
 <?php
-// API Auth: Do you Need it? And its Parts
 use App\Kernel;
 use Symfony\Component\Debug\Debug;
 use Symfony\Component\HttpFoundation\Request;
